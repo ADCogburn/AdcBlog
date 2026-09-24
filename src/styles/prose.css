@@ -1,0 +1,108 @@
+/*
+ * Styles for the elements Markdown generates. Posts contain no class names, so
+ * this targets elements, scoped under .prose. :where() keeps specificity at a
+ * single class so components rendered inside a Post can override it.
+ */
+
+:where(.prose) > * + * {
+	margin-block-start: var(--space-3);
+}
+
+:where(.prose) :is(h2, h3, h4) {
+	line-height: var(--leading-tight);
+	margin-block: var(--space-5) var(--space-3);
+}
+
+:where(.prose) h2 {
+	font-size: var(--text-xl);
+}
+
+:where(.prose) h3 {
+	font-size: var(--text-lg);
+}
+
+:where(.prose) p,
+:where(.prose) :is(ul, ol) {
+	margin-block: 0 var(--space-3);
+}
+
+:where(.prose) :is(ul, ol) {
+	padding-inline-start: var(--space-4);
+}
+
+:where(.prose) li + li {
+	margin-block-start: var(--space-1);
+}
+
+:where(.prose) a {
+	color: var(--color-accent);
+	text-underline-offset: 0.15em;
+}
+
+:where(.prose) blockquote {
+	margin-inline: 0;
+	padding-inline-start: var(--space-3);
+	border-inline-start: 3px solid var(--color-border);
+	color: var(--color-muted);
+}
+
+:where(.prose) code {
+	font-family: var(--font-mono);
+	font-size: 0.9em;
+}
+
+:where(.prose) :not(pre) > code {
+	padding: 0.1em 0.3em;
+	border-radius: var(--radius);
+	background-color: var(--color-code-bg);
+}
+
+:where(.prose) pre {
+	padding: var(--space-3);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius);
+	overflow-x: auto;
+	line-height: 1.5;
+	font-size: var(--text-sm);
+}
+
+/*
+ * Shiki renders with `defaultColor: false`, emitting --shiki-light and
+ * --shiki-dark on every token. light-dark() picks between them using the same
+ * `color-scheme` that drives the tokens, so code flips with the page.
+ */
+:where(.prose) pre.astro-code,
+:where(.prose) pre.astro-code span {
+	color: light-dark(var(--shiki-light), var(--shiki-dark));
+}
+
+:where(.prose) pre.astro-code {
+	background-color: light-dark(var(--shiki-light-bg), var(--shiki-dark-bg));
+}
+
+:where(.prose) table {
+	border-collapse: collapse;
+	display: block;
+	overflow-x: auto;
+}
+
+:where(.prose) :is(th, td) {
+	padding: var(--space-2) var(--space-3);
+	border: 1px solid var(--color-border);
+	text-align: start;
+}
+
+:where(.prose) th {
+	background-color: var(--color-surface);
+}
+
+:where(.prose) img {
+	max-width: 100%;
+	height: auto;
+}
+
+:where(.prose) hr {
+	border: none;
+	border-block-start: 1px solid var(--color-border);
+	margin-block: var(--space-5);
+}
