@@ -21,9 +21,9 @@ one, request its `requestUrl`, save the body unchanged, and update `recordedAt`.
 - Media renders as `pic.twitter.com/…`, not `pic.x.com/…`, even for 2025 social
   posts.
 - Encoding inside `html` is mixed:
-  - Emoji are JSON-escaped as UTF-16 surrogate pairs (`👇`).
+  - Emoji are JSON-escaped as UTF-16 surrogate pairs (`\uD83D\uDC47`).
   - Other non-ASCII, such as the curly quote `’`, is raw UTF-8.
-  - `<` and `>` are escaped as `<` and `>`, and `/` as `\/`.
+  - `<` and `>` are escaped as `\u003C` and `\u003E`, and `/` as `\/`.
 - In the post text itself, the only HTML entity seen is `&#39;`. `&amp;` appears
   only inside hashtag `href`s, and `&mdash;` only in the byline. Line breaks are
   `<br>` tags inside the `<p>`.
