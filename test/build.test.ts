@@ -1,8 +1,9 @@
 import { spawnSync } from 'node:child_process';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { beforeAll, describe, expect, it } from 'vitest';
+import { localDate, newPostPath, newPostSource } from '../src/content/new-post';
 
 const astroCli = fileURLToPath(new URL('../node_modules/astro/bin/astro.mjs', import.meta.url));
 
@@ -43,6 +44,24 @@ describe('astro build', () => {
 
 		expect(exitCode).not.toBe(0);
 		expect(output).toContain('No Archive for <Tweet id="404404404" />');
+	}, 60_000);
+});
+
+describe('a Post created by `npm run new`', () => {
+	it('passes the blog schema and appears nowhere until draft is flipped', () => {
+		const fixtureBlog = new URL('./fixtures/build/new-post/src/content/blog/', import.meta.url);
+		rmSync(fixtureBlog, { recursive: true, force: true });
+		mkdirSync(fixtureBlog, { recursive: true });
+		const file = newPostPath('Some Title: A "New" Post', fixtureBlog);
+		writeFileSync(file, newPostSource('Some Title: A "New" Post', localDate(new Date())));
+
+		const { exitCode, output, dist } = build('new-post');
+
+		expect(exitCode, output).toBe(0);
+		expect(existsSync(join(dist, 'blog/some-title-a-new-post'))).toBe(false);
+		for (const page of ['index.html', 'rss.xml', 'sitemap-0.xml']) {
+			expect(readFileSync(join(dist, page), 'utf8'), page).not.toContain('some-title-a-new-post');
+		}
 	}, 60_000);
 });
 

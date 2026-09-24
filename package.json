@@ -13,7 +13,8 @@
     "astro": "astro",
     "check": "astro check",
     "test": "vitest",
-    "embed:tweet": "tsx scripts/embed-tweet.ts"
+    "embed:tweet": "tsx scripts/embed-tweet.ts",
+    "new": "tsx scripts/new-post.ts"
   },
   "dependencies": {
     "@astrojs/mdx": "^8.0.2",
