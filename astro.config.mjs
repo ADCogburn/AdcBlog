@@ -12,4 +12,13 @@ const site = process.env.SITE_URL || 'https://adcblog.adcogburn.workers.dev';
 export default defineConfig({
 	site,
 	integrations: [mdx(), sitemap()],
+	markdown: {
+		shikiConfig: {
+			themes: { light: 'github-light', dark: 'github-dark' },
+			// No inline default: every token carries --shiki-light and
+			// --shiki-dark, and prose.css picks one with light-dark() so code
+			// blocks follow the same color-scheme switch as the page.
+			defaultColor: false,
+		},
+	},
 });

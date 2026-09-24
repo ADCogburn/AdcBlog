@@ -1,0 +1,46 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import FormattedDate from '../components/FormattedDate.astro';
+import Base from './Base.astro';
+
+interface Props {
+	post: CollectionEntry<'blog'>;
+}
+
+const { title, description, pubDate, updatedDate, tags } = Astro.props.post.data;
+---
+
+<Base title={title} description={description}>
+	<article>
+		<header class="post-header">
+			<h1>{title}</h1>
+			<p class="meta">
+				<FormattedDate date={pubDate} />
+				{
+					updatedDate && (
+						<>
+							{' · Updated '}
+							<FormattedDate date={updatedDate} />
+						</>
+					)
+				}
+				{tags.length > 0 && <span class="tags">{' · '}{tags.join(', ')}</span>}
+			</p>
+		</header>
+		<div class="prose">
+			<slot />
+		</div>
+	</article>
+</Base>
+
+<style>
+	.post-header {
+		margin-block-end: var(--space-5);
+	}
+
+	.meta {
+		margin: 0;
+		color: var(--color-muted);
+		font-size: var(--text-sm);
+	}
+</style>
