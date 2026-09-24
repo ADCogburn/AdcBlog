@@ -18,8 +18,11 @@ one, request its `requestUrl`, save the body unchanged, and update `recordedAt`.
 
 - `publish.twitter.com/oembed` answers `301` to `publish.x.com/oembed`. No
   authentication is required.
-- Media renders as `pic.twitter.com/…`, not `pic.x.com/…`, even for 2025 social
-  posts.
+- Media renders as `pic.twitter.com/…`, including for a social post from
+  2026-09-20 (the Complex fixture). X's oEmbed docs show `pic.x.com/…` in their
+  sample response, but requesting that same sample post live returns
+  `pic.twitter.com`. Either may appear, so the parser should accept both. The link
+  is a `t.co` redirect to the social post's photo page, not an image file.
 - Encoding inside `html` is mixed:
   - Emoji are JSON-escaped as UTF-16 surrogate pairs (`\uD83D\uDC47`).
   - Other non-ASCII, such as the curly quote `’`, is raw UTF-8.
