@@ -1,0 +1,73 @@
+name: Link health
+
+# Weekly Network-fact checks (ADR-0002). Opens at most one pull request and
+# updates one digest issue. It never pushes to the default branch, and deploys
+# only run on pushes to main, so no failure of this job can block or trigger
+# a deploy.
+on:
+  schedule:
+    - cron: '17 6 * * 1' # Mondays, 06:17 UTC
+  workflow_dispatch:
+
+concurrency:
+  group: link-health
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+env:
+  BRANCH: bot/link-health
+  GH_TOKEN: ${{ github.token }}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: Check links and Embeds
+        id: check
+        run: npx tsx scripts/links-check.ts --digest "$RUNNER_TEMP/digest.md" --pr-body "$RUNNER_TEMP/pr.md"
+        env:
+          # Optional. Without them Save Page Now is anonymous (usually rate
+          # limited), and the Ledger records the latest existing capture instead.
+          IA_ACCESS_KEY: ${{ secrets.IA_ACCESS_KEY }}
+          IA_SECRET_KEY: ${{ secrets.IA_SECRET_KEY }}
+
+      - name: Open or update the pull request
+        if: steps.check.outputs.changed == 'true'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch --force-create "$BRANCH"
+          git add data/link-ledger.json src/content
+          git commit --message "Link health: $(date -u +%F)"
+          git push --force origin "$BRANCH"
+          open=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')
+          if [ -n "$open" ]; then
+            gh pr edit "$open" --body-file "$RUNNER_TEMP/pr.md"
+          else
+            gh pr create --base '${{ github.event.repository.default_branch }}' --head "$BRANCH" \
+              --title 'Link health: Snapshots, rewrites and Removals' --body-file "$RUNNER_TEMP/pr.md"
+          fi
+
+      - name: Update the digest issue
+        if: steps.check.outputs.digest == 'true'
+        run: |
+          gh label create link-health --color C5DEF5 --description 'Weekly link-health digest' --force
+          open=$(gh issue list --label link-health --state open --json number --jq '.[0].number')
+          if [ -n "$open" ]; then
+            gh issue edit "$open" --body-file "$RUNNER_TEMP/digest.md"
+          else
+            gh issue create --title 'Link health digest' --label link-health --body-file "$RUNNER_TEMP/digest.md"
+          fi
