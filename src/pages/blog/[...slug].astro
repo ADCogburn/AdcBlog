@@ -1,7 +1,11 @@
 ---
 import { render } from 'astro:content';
+import Tweet from '../../components/Tweet.astro';
 import { getPublishedPosts } from '../../content/posts';
 import Post from '../../layouts/Post.astro';
+
+// Components every Post can use without importing them.
+const components = { Tweet };
 
 export async function getStaticPaths() {
 	const posts = await getPublishedPosts();
@@ -13,5 +17,5 @@ const { Content } = await render(post);
 ---
 
 <Post post={post}>
-	<Content />
+	<Content components={components} />
 </Post>

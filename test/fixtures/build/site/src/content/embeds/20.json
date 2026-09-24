@@ -1,0 +1,19 @@
+{
+	"id": "20",
+	"url": "https://x.com/jack/status/20",
+	"authorName": "jack",
+	"authorHandle": "jack",
+	"date": "2006-03-21",
+	"text": "just setting up my twttr",
+	"capturedAt": "2026-09-24T12:00:00.000Z",
+	"removedAt": "2027-01-01",
+	"raw": {
+		"url": "https://x.com/jack/status/20",
+		"author_name": "jack",
+		"author_url": "https://x.com/jack",
+		"html": "<blockquote class=\"twitter-tweet\" data-dnt=\"true\"><p lang=\"en\" dir=\"ltr\">just setting up my twttr</p>&mdash; jack (@jack) <a href=\"https://x.com/jack/status/20?ref_src=twsrc%5Etfw\">March 21, 2006</a></blockquote>\n\n",
+		"type": "rich",
+		"provider_name": "X",
+		"version": "1.0"
+	}
+}
