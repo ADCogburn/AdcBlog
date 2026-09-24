@@ -6,6 +6,9 @@ test/fixtures/build/new-post/src/
 # generated types
 .astro/
 
+# wrangler local state
+.wrangler/
+
 # dependencies
 node_modules/
 
