@@ -14,7 +14,8 @@ _Avoid_: Article, entry, page
 
 **Draft**:
 A Post excluded from every build output — no page, no index entry, no feed item,
-no sitemap entry. Marked explicitly on the Post.
+no sitemap entry. Marked explicitly on the Post. Still shown by the dev server,
+which is a preview rather than a build output.
 _Avoid_: Unpublished, WIP, hidden
 
 **Embargo**:
