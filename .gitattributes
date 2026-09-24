@@ -1,0 +1,2 @@
+# Fixtures are provider payloads kept byte-for-byte as received. Never normalize.
+test/fixtures/** -text
