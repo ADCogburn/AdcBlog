@@ -1,0 +1,15 @@
+# Cloudflare Workers with static assets: no Worker script, just the built site.
+# Adding a fetch handler later is a `main = "..."` line, not a re-platform.
+name = "adcblog"
+compatibility_date = "2026-09-24"
+
+# Serve on adcblog.<account>.workers.dev. Keep this on after a custom domain
+# is added, so the old hostname can 301 to the new one.
+workers_dev = true
+
+[assets]
+directory = "./dist"
+# Astro builds /blog/<slug>/index.html; this serves it at /blog/<slug>/ and
+# redirects /blog/<slug> there, matching the permalinks in the feed and sitemap.
+html_handling = "auto-trailing-slash"
+not_found_handling = "404-page"

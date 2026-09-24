@@ -1,0 +1,56 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Never run two deploys at once, and never cancel one midway.
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      # Read by astro.config.mjs at build time. Unset or empty falls back to
+      # the workers.dev URL, so no repository variable is needed until there
+      # is a custom domain. A variable, not a secret: the Worker never reads it.
+      SITE_URL: ${{ vars.SITE_URL }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: Test
+        run: npm test -- --run
+
+      - name: Typecheck
+        run: npm run check
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy
+        run: npx wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Smoke test
+        run: |
+          site="${SITE_URL:-https://adcblog.adcogburn.workers.dev}"
+          for path in / /rss.xml /sitemap-index.xml; do
+            curl --fail --silent --show-error --retry 5 --retry-delay 5 --retry-all-errors \
+              --output /dev/null "${site%/}${path}"
+            echo "OK ${site%/}${path}"
+          done
