@@ -1,0 +1,41 @@
+{
+  "provider": "X",
+  "endpoint": "https://publish.x.com/oembed",
+  "fixtures": [
+    {
+      "file": "jack-20.json",
+      "sourceUrl": "https://x.com/jack/status/20",
+      "requestUrl": "https://publish.x.com/oembed?url=https%3A%2F%2Fx.com%2Fjack%2Fstatus%2F20&omit_script=1&dnt=true",
+      "recordedAt": "2026-09-24",
+      "cases": ["plain"]
+    },
+    {
+      "file": "theellenshow-440322224407314432.json",
+      "sourceUrl": "https://x.com/TheEllenShow/status/440322224407314432",
+      "requestUrl": "https://publish.x.com/oembed?url=https%3A%2F%2Fx.com%2FTheEllenShow%2Fstatus%2F440322224407314432&omit_script=1&dnt=true",
+      "recordedAt": "2026-09-24",
+      "cases": ["hashtag", "media-link", "html-entity"]
+    },
+    {
+      "file": "emojipedia-1907441841177317670.json",
+      "sourceUrl": "https://x.com/Emojipedia/status/1907441841177317670",
+      "requestUrl": "https://publish.x.com/oembed?url=https%3A%2F%2Fx.com%2FEmojipedia%2Fstatus%2F1907441841177317670&omit_script=1&dnt=true",
+      "recordedAt": "2026-09-24",
+      "cases": ["mention", "emoji", "multi-line", "link"]
+    },
+    {
+      "file": "oneplus_in-1874002928056602771.json",
+      "sourceUrl": "https://x.com/OnePlus_IN/status/1874002928056602771",
+      "requestUrl": "https://publish.x.com/oembed?url=https%3A%2F%2Fx.com%2FOnePlus_IN%2Fstatus%2F1874002928056602771&omit_script=1&dnt=true",
+      "recordedAt": "2026-09-24",
+      "cases": ["hashtag", "emoji", "multi-line"]
+    },
+    {
+      "file": "emojipedia-1812879279509676133.json",
+      "sourceUrl": "https://x.com/Emojipedia/status/1812879279509676133",
+      "requestUrl": "https://publish.x.com/oembed?url=https%3A%2F%2Fx.com%2FEmojipedia%2Fstatus%2F1812879279509676133&omit_script=1&dnt=true",
+      "recordedAt": "2026-09-24",
+      "cases": ["hashtag", "emoji", "link", "media-link"]
+    }
+  ]
+}
