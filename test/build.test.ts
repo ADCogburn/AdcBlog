@@ -37,6 +37,13 @@ describe('astro build', () => {
 		expect(output).toContain('My Post.mdx');
 		expect(output).toContain('not a valid slug');
 	}, 60_000);
+
+	it('fails on a Post whose Embed has no committed Archive, naming the id', () => {
+		const { exitCode, output } = build('missing-archive');
+
+		expect(exitCode).not.toBe(0);
+		expect(output).toContain('No Archive for <Tweet id="404404404" />');
+	}, 60_000);
 });
 
 describe('a production build of the site', () => {
@@ -61,6 +68,16 @@ describe('a production build of the site', () => {
 		for (const output of ['index.html', 'rss.xml', 'sitemap-0.xml']) {
 			expect(read(output), output).not.toContain(slug);
 		}
+	});
+
+	it('renders an Embed from its Archive, with the Removal notice once removedAt is set', () => {
+		const html = read('blog/removed-embed/index.html');
+
+		expect(html).toContain('just setting up my twttr');
+		expect(html).toContain('(@jack)');
+		expect(html).toMatch(
+			/Removed from X as of\s*<time[^>]*>\s*January 1, 2027\s*<\/time>; archived\s*<time[^>]*>\s*September 24, 2026\s*<\/time>\./,
+		);
 	});
 
 	it('puts only the description and link in the feed, never the Post body', () => {

@@ -1,0 +1,20 @@
+---
+// <Tweet id="…" /> in a Post. Renders the committed Archive, never the
+// network. A missing Archive is a repo fact, so it fails the build (ADR-0002).
+import { getEntry } from 'astro:content';
+import TweetCard from './TweetCard.astro';
+
+interface Props {
+	id: string;
+}
+
+const { id } = Astro.props;
+const archive = await getEntry('embeds', id);
+if (!archive) {
+	throw new Error(
+		`No Archive for <Tweet id="${id}" />: expected src/content/embeds/${id}.json. Run \`npm run embed:tweet -- <url>\` and commit the file.`,
+	);
+}
+---
+
+<TweetCard archive={archive.data} />
