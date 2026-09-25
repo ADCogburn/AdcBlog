@@ -48,7 +48,7 @@ jobs:
 
       - name: Smoke test
         run: |
-          site="${SITE_URL:-https://adcblog.adcogburn.workers.dev}"
+          site="${SITE_URL:-https://adcblog.andrew-d-cogburn.workers.dev}"
           for path in / /rss.xml /sitemap-index.xml; do
             curl --fail --silent --show-error --retry 5 --retry-delay 5 --retry-all-errors \
               --output /dev/null "${site%/}${path}"
