@@ -1,0 +1,62 @@
+---
+// Pure presentation of an Embed from its Archive. No content-layer access, so
+// it can be rendered in isolation; Tweet.astro does the lookup.
+import type { CollectionEntry } from 'astro:content';
+import FormattedDate from './FormattedDate.astro';
+
+interface Props {
+	archive: CollectionEntry<'embeds'>['data'];
+}
+
+const { url, authorName, authorHandle, date, text, capturedAt, removedAt } = Astro.props.archive;
+---
+
+<figure class="tweet">
+	<blockquote cite={url}>
+		<p>{text}</p>
+	</blockquote>
+	<figcaption>
+		&mdash; {authorName} (@{authorHandle}), <a href={url}><FormattedDate date={date} /></a>
+	</figcaption>
+	{
+		removedAt && (
+			<p class="removed">
+				Removed from X as of <FormattedDate date={removedAt} />; archived <FormattedDate date={capturedAt} />.
+			</p>
+		)
+	}
+</figure>
+
+<style>
+	.tweet {
+		margin-inline: 0;
+		padding: var(--space-3);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius);
+		background-color: var(--color-surface);
+	}
+
+	blockquote {
+		margin: 0;
+		padding: 0;
+		border: none;
+		color: var(--color-text);
+	}
+
+	blockquote p {
+		margin: 0;
+		white-space: pre-line;
+		overflow-wrap: anywhere;
+	}
+
+	figcaption,
+	.removed {
+		margin-block: var(--space-2) 0;
+		color: var(--color-muted);
+		font-size: var(--text-sm);
+	}
+
+	.removed {
+		font-style: italic;
+	}
+</style>
