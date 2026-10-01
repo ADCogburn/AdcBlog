@@ -18,6 +18,9 @@ export const archiveSchema = z.object({
 	text: z.string(),
 	capturedAt: z.coerce.date(),
 	removedAt: z.coerce.date().optional(),
+	// The author's avatar as it was at Capture, inlined so rendering never
+	// reaches X. Optional: it comes from an unofficial endpoint that may fail.
+	avatar: z.string().startsWith('data:image/').optional(),
 	// The provider's response exactly as received, kept so the Archive can be
 	// re-parsed if the parser changes. A record, not z.unknown(), because
 	// Zod 4 treats an unknown-typed key as optional.

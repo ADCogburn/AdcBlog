@@ -31,8 +31,9 @@ not as decoration — an Embed that fails to render damages the surrounding pros
 _Avoid_: Card, widget, tweet embed
 
 **Archive**:
-The committed record of an Embed's content — author, handle, date, text, and the
-original provider payload. The Archive, not the live network, is what a build renders.
+The committed record of an Embed's content — author, handle, date, text, the
+author's avatar when one could be had, and the original provider payload. The
+Archive, not the live network, is what a build renders.
 _Avoid_: Cache, snapshot (reserved for links), backup
 
 **Capture**:

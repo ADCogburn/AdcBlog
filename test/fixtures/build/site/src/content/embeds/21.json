@@ -1,0 +1,19 @@
+{
+	"id": "21",
+	"url": "https://x.com/jack/status/21",
+	"authorName": "Jack Dorsey",
+	"authorHandle": "jack",
+	"date": "2006-03-21",
+	"text": "inviting coworkers",
+	"capturedAt": "2026-09-24T12:00:00.000Z",
+	"avatar": "data:image/gif;base64,R0lGODlhAQABAAAAACw=",
+	"raw": {
+		"url": "https://x.com/jack/status/21",
+		"author_name": "Jack Dorsey",
+		"author_url": "https://x.com/jack",
+		"html": "<blockquote class=\"twitter-tweet\" data-dnt=\"true\"><p lang=\"en\" dir=\"ltr\">inviting coworkers</p>&mdash; Jack Dorsey (@jack) <a href=\"https://x.com/jack/status/21?ref_src=twsrc%5Etfw\">March 21, 2006</a></blockquote>\n\n",
+		"type": "rich",
+		"provider_name": "X",
+		"version": "1.0"
+	}
+}
