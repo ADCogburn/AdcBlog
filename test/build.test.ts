@@ -93,10 +93,27 @@ describe('a production build of the site', () => {
 		const html = read('blog/removed-embed/index.html');
 
 		expect(html).toContain('just setting up my twttr');
-		expect(html).toContain('(@jack)');
+		expect(html).toContain('>@jack<');
 		expect(html).toMatch(
 			/Removed from X as of\s*<time[^>]*>\s*January 1, 2027\s*<\/time>; archived\s*<time[^>]*>\s*September 24, 2026\s*<\/time>\./,
 		);
+	});
+
+	it('renders an Embed as a social post card: avatar, name, handle and date linking back to X', () => {
+		const html = read('blog/live-embed/index.html');
+
+		expect(html).toContain('src="data:image/gif;base64,R0lGODlhAQABAAAAACw="');
+		expect(html).toMatch(/<a[^>]*href="https:\/\/x\.com\/jack"[^>]*>[\s\S]*Jack Dorsey[\s\S]*@jack/);
+		expect(html).toMatch(/<a[^>]*href="https:\/\/x\.com\/jack\/status\/21"[^>]*>\s*<time[^>]*>\s*Mar 21, 2006/);
+		expect(html).toMatch(/aria-label="View on X"/);
+		expect(html).not.toContain('Removed from X');
+	});
+
+	it('shows a monogram in place of the avatar when the Archive has none', () => {
+		const html = read('blog/removed-embed/index.html');
+
+		expect(html).toMatch(/class="[^"]*monogram[^"]*"[^>]*>\s*J\s*</);
+		expect(html).not.toContain('<img');
 	});
 
 	it('puts only the description and link in the feed, never the Post body', () => {
